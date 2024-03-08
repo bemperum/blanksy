@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <title>Blanksy</title>
+  <link href="css/googlefonts.css" rel="stylesheet">
+  <link href="css/blnksy.css" rel="stylesheet">
+  <link href="css/w3.css" rel="stylesheet">
+  
+  <!--
+    The code still supports the JSON Preview, if necessary. 
+    <script src="extjs/json-preview.js"></script> 
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+</head>
+<!-- BODY -->
+<body class="w3-body">
+  <div class="ce-blnksy w3-top">
+    <div class="ce-blnksy__header w3-bar w3-grey w3-border">
+		<span class="ce-blnksy__header-logo" >Blanksy</span>
+		
+		<!-- Build a nicer Toolbar here -->
+      <div class="ce-blnksy__header-menu">
+        <!-- Buttons -->
+        <a class="w3-button w3-red" id="resetbutton">Clear</a>
+		    <a class="w3-button w3-blue" id="saveButton">Update DOM</a>
+        <!-- 
+          TODO / WIP:
+          <a class="w3-button w3-indigo" id="getHMTLButton">Get plain HTML</a> 
+        -->
+        <a class="w3-button w3-green" id="exportButton">Export</a>
+      </div>
+	  
+    </div> <!-- end of header -->
+
+    <!-- Content -->
+    <div class="ce-blnksy__content _ce-blnksy__content--small w3-container">
+      <div id="editorjs"></div>
+      <div class="w3-grey ce-blnksy__statusbar">
+        Readonly:&NonBreakingSpace;
+        <b id="readonly-state">
+          Off
+        </b>
+        &NonBreakingSpace;
+        <div class="ce-blnksy__statusbar-button w3-red" id="toggleReadOnlyButton">
+          Toggle
+        </div>
+      </div>
+    </div> <!-- end of the main thingy -->
+	
+<!-- JSON Code Preview:
+	<div class="ce-blnksy__output">
+      <pre class="ce-blnksy__output-content" id="output"></pre>
+    </div>
+-->
+	
+  </div>
+
+  <!-- Load Tools : these are supported by blanksy as of now -->
+  <script src="extjs/editorjs-header_2.8.1.js"></script><!-- Image -->
+  <script src="extjs/simple-image_1.6.0.js"></script><!-- Image -->
+  <script src="extjs/delimiter_1.4.0.js"></script><!-- Delimiter -->
+  <script src="extjs/list_1.9.0.js"></script><!-- List -->
+  <script src="extjs/checklist_1.6.0.js"></script><!-- Checklist -->
+  <script src="extjs/quote_2.6.0.js"></script><!-- Quote -->
+  <script src="extjs/code_2.9.0.js"></script><!-- Code -->
+  <script src="extjs/embed_2.7.0.js"></script><!-- Embed -->
+  <script src="extjs/table_2.3.0.js"></script><!-- Table -->
+  <script src="extjs/link_2.6.2.js"></script><!-- Link -->
+  <script src="extjs/warning_1.4.0.js"></script><!-- Warning -->
+  <script src="extjs/marker_1.4.0.js"></script><!-- Marker -->
+  <script src="extjs/inline-code_1.5.0.js"></script><!-- Inline Code -->
+
+  <!-- Load Editor.js's Core -->
+  <script src="extjs/editorjs_2.29.0.js"></script>
+  <script src="extjs/editorjs-html_3.4.0.js"></script>
+
+  <!-- Initialization -->
+  <script>
+    /**
+     * To initialize the Editor, create a new instance with configuration object
+     * @see docs/installation.md for mode details
+     */
+    var editor = new EditorJS({
+      /**
+       * Enable/Disable the read only mode
+       */
+      readOnly: false,
+
+      /**
+       * Wrapper of Editor
+       */
+      holder: 'editorjs',
+
+      /**
+       * Tools list
+       */
+      tools: {
+
+        header: {
+          class: Header,
+          inlineToolbar: ['marker', 'link'],
+          config: {
+            placeholder: 'Header'
+          },
+          // shortcut: 'CMD+SHIFT+H'
+        },
+
+        image: SimpleImage,
+
+        list: {
+          class: List,
+          inlineToolbar: true,
+          // shortcut: 'CMD+SHIFT+L'
+        },
+
+        checklist: {
+          class: Checklist,
+          inlineToolbar: true,
+        },
+
+        quote: {
+          class: Quote,
+          inlineToolbar: true,
+          config: {
+            quotePlaceholder: 'Enter a quote',
+            captionPlaceholder: 'Quote\'s author',
+          },
+          // shortcut: 'CMD+SHIFT+O'
+        },
+
+        marker: {
+          class:  Marker,
+          // shortcut: 'CMD+SHIFT+M'
+        },
+
+        code: {
+          class:  CodeTool,
+          // shortcut: 'CMD+SHIFT+C'
+        },
+
+        delimiter: Delimiter,
+
+        inlineCode: {
+          class: InlineCode,
+          // shortcut: 'CMD+SHIFT+C'
+        },
+
+        /** linkTool: LinkTool, **/
+
+        embed: Embed,
+
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          // shortcut: 'CMD+ALT+T'
+        },
+
+      },
+
+      /**
+       * This Tool will be used as default
+       */
+      defaultBlock: 'paragraph',
+
+      /**
+       * Initial Editor data > 
+       */
+      data:{
+	  "blocks" : [
+        {
+            "type" : "header",
+            "data" : {
+                "text" : "Demo Title",
+                "level" : 1
+            }
+        },
+        {
+            "type" : "paragraph",
+            "data" : {
+                "text" : "Lorem Ipsum sit amet dolor."
+            }
+        }
+    ],
+	},
+	  
+      onReady: function(){
+        saveButton.click();
+      },
+	  
+      onChange: function(api, event) {
+        // console.log('something changed', event);
+      }
+    });
+
+    /**
+     * Saving button
+     */
+    const saveButton = document.getElementById('saveButton');
+    const exportButton = document.getElementById('exportButton');
+    const resetbutton = document.getElementById('resetbutton');
+    const getHMTLButton = document.getElementById('getHMTLButton');
+
+    /**
+     * Toggle read-only button
+     */
+    const toggleReadOnlyButton = document.getElementById('toggleReadOnlyButton');
+    const readOnlyIndicator = document.getElementById('readonly-state');
+
+    /**
+     * Saving blnksy
+     */
+    saveButton.addEventListener('click', function () {
+      editor.save()
+        .then((savedData) => {
+			// After saving the data, pass them on to the Preview-Window if you want:
+			// cPreview.show(savedData, document.getElementById("output"));
+      // Else, leave it out.
+      })
+        .catch((error) => {
+          console.error('Saving error', error);
+          // TODO: Show the user the problem, not only in the console. 
+      });
+    });
+
+    /**
+     * Exporting Blanksy 
+     */
+    exportButton.addEventListener('click', function() {
+
+        editor.save()
+          .then((savedData) => {
+            let date = new Date();
+            let filename = '' + date.toISOString().split('T')[0] + '_blanksy';
+            downloadObjectAsJson(savedData, filename);
+          })
+          .catch((error) => {
+            console.error('Save & Download failed', error);
+          })
+
+    }); // exportButton
+
+    resetbutton.addEventListener('click', function(){
+      editor.blocks.clear();
+    }); // resetButton
+
+    /**
+     * Download the JSON Data Block 
+     */
+    function downloadObjectAsJson(exportObj, exportName){
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+      var downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href",     dataStr);
+      downloadAnchorNode.setAttribute("download", exportName + ".json");
+      document.body.appendChild(downloadAnchorNode); // required for firefox
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    }
+
+    /**
+     * Get Plain HTML:
+     * TODO!
+     */
+    //  getHMTLButton.addEventListener('click', function(){
+    //     // ?
+    //     editor.save()
+    //       .then((savedData) => {
+    //       const edjsParser = edjsHTML();
+    //       let html = edjsParser.parse(savedData);
+    //       console.log(html.toString());
+    //     })
+    //     .catch((error) => {
+    //       console.error('Export HTML & Download failed', error);
+    //     })
+    // });
+
+    /**
+     *
+     * Toggle read-only blnksy
+     */
+    toggleReadOnlyButton.addEventListener('click', async () => {
+      const readOnlyState = await editor.readOnly.toggle();
+
+      readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
+    });
+  </script>
+</body>
+</html>
