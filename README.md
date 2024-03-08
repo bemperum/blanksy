@@ -14,7 +14,7 @@ Because I like the way the Gutenberg block editor in Wordpress works (moving **b
 ## Prequesites
 
 blanksy.html file and the following folder structure. Please get the needed libraries from their respective websites.
-
+```
 ├── blanksy.html
 │
 ├───css
@@ -40,11 +40,17 @@ blanksy.html file and the following folder structure. Please get the needed libr
         table_2.3.0.js
         warning_1.4.0.js
 
+```
+
 ## Links
 
 Editor.js from https://github.com/codex-team/editor.js
+
 Editorjs-html from https://github.com/pavittarx/editorjs-html
+
 w3.css from https://www.w3schools.com/w3css/w3css_downloads.asp
+
+
 
 ## Thanks
 
