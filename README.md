@@ -44,8 +44,9 @@ blanksy.html file and the following folder structure. Please get the needed libr
 
 ## Screenshots 
 
-(screenshots/blanksy001.jpg)
-(screenshots/blanksy002.jpg)
+![Main Window](screenshots/blanksy001.jpg)
+
+![Tools](screenshots/blanksy002.jpg)
 
 ## Links
 
