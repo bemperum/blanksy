@@ -42,6 +42,11 @@ blanksy.html file and the following folder structure. Please get the needed libr
 
 ```
 
+## Screenshots 
+
+(screenshots/blanksy001.jpg)
+(screenshots/blanksy002.jpg)
+
 ## Links
 
 Editor.js from https://github.com/codex-team/editor.js
